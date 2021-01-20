@@ -1,8 +1,8 @@
 // State change functions
-import { setTimeouts } from "./index";
+import { setTimeouts, setArrayValues } from "./index";
 
 // Constants
-import { STATE } from "../../../utils/constants";
+import { STATE, MAX_VALUE } from "../../../utils/constants";
 
 export const stopSorting = () => {
   return (dispatch, _getState) => {
@@ -39,5 +39,14 @@ export const rerenderGrid = () => {
       DOMArr[idx].classList.remove(STATE.SORTED.verbose);
       DOMArr[idx].classList.remove(STATE.CURRENT.verbose);
     });
+  };
+};
+
+export const getNewValues = () => {
+  return (dispatch, _getState) => {
+    const initialArray = [];
+    for (let i = 0; i < _getState().main.arraySize; i++)
+      initialArray[i] = Math.round(Math.random() * MAX_VALUE) + 1;
+    dispatch(setArrayValues(initialArray));
   };
 };

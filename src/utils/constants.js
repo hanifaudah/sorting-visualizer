@@ -1,4 +1,4 @@
-export const MAX_VALUE = 100;
+export const MAX_VALUE = 80;
 
 export const SPEED = {
   FAST: {

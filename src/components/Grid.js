@@ -6,10 +6,11 @@ import NavBar from "./NavBar";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
-import { setArrayValues } from "../redux/modules/main";
+import { getNewValues } from "../redux/modules/main/thunks";
 
 // Constants
 import { MAX_VALUE, STATE } from "../utils/constants";
+import { setArraySize } from "../redux/modules/main";
 
 const CSS = styled.div`
   overflow: hidden;
@@ -18,7 +19,7 @@ const CSS = styled.div`
     height: 100vh;
     width: 100vw;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     flex-direction: column;
 
     &,
@@ -31,6 +32,9 @@ const CSS = styled.div`
       display: flex;
       justify-content: center;
       align-items: flex-end;
+      height: 100%;
+      background: rgb(242, 242, 242);
+      margin-bottom: 3em;
 
       .array-item {
         background: ${STATE.DEFAULT.color};
@@ -73,19 +77,18 @@ const Grid = () => {
   // Global State
   const { arraySize, arrayValues } = useSelector((state) => state.main);
 
-  // Local state
-  // const [arrayValues, setArrayValues] = useState([]);
+  useEffect(() => {
+    dispatch(getNewValues());
+  }, [arraySize]);
 
   useEffect(() => {
-    const intialArray = [];
-    for (let i = 0; i < arraySize; i++)
-      intialArray[i] = Math.round(Math.random() * MAX_VALUE) + 1;
-    dispatch(setArrayValues(intialArray));
-  }, [arraySize]);
+    if (window.innerWidth < 768) dispatch(setArraySize(20));
+  }, []);
 
   return (
     <CSS arrayValues={arrayValues}>
       <main>
+        <NavBar.Top />
         <div className="array-container">
           {arrayValues &&
             Object.values(arrayValues).map((val, idx) => (
